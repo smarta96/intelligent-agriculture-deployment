@@ -1,0 +1,28 @@
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: intelligent-agriculture-workshop
+  namespace: workshop-guide
+  labels:
+    app: intelligent-agriculture-workshop
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/guimou/intelligent-agriculture-workshop
+  strategy:
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: httpd-24-rhel7:latest
+    type: Docker
+  output:
+    to:
+      kind: ImageStreamTag
+      name: intelligent-agriculture-workshop:latest
+  resources: {}
+  triggers:
+  - type: ConfigChange
+  - type: ImageChange
+    imageChange: {}

@@ -1,0 +1,17 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: intelligent-agriculture-workshop
+  namespace: workshop-guide
+  labels:
+    app: intelligent-agriculture-workshop
+spec:
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  to:
+    kind: Service
+    name: intelligent-agriculture-workshop
+    weight: 100
+  wildcardPolicy: None

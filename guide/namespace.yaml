@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: workshop-guide
+  annotations:
+    openshift.io/description: ""
+    openshift.io/display-name: "Workshop Guide"

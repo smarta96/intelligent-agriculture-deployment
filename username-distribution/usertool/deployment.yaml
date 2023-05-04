@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: redis
+  name: redis
+  namespace: workshop-guide
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: redis
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        deployment: redis
+    spec:
+      containers:
+      - name: redis
+        env:
+        - name: LAB_ADMIN_PASS
+          value: admin
+        - name: LAB_DURATION_HOURS
+          value: 1week
+        - name: LAB_EXTRA_URLS
+          value: ""
+        - name: LAB_MODULE_URLS
+          value: ""
+        - name: LAB_REDIS_HOST
+          value: redis
+        - name: LAB_REDIS_PASS
+          value: redis
+        - name: LAB_TITLE
+          value: "Intelligent Agriculture Workshop"
+        - name: LAB_USER_ACCESS_TOKEN
+          value: openshift
+        - name: LAB_USER_COUNT
+          value: "50"
+        - name: LAB_USER_PAD_ZERO
+          value: "false"
+        - name: LAB_USER_PASS
+          value: openshift
+        - name: LAB_USER_PREFIX
+          value: user
+        image: quay.io/openshiftlabs/username-distribution@sha256:d9e1770fbc92f540d19cdceb830fa18ea0d2c31e2fa52685d3e19543131ed662
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}

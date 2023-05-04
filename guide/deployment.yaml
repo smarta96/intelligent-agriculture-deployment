@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: intelligent-agriculture-workshop
+  name: intelligent-agriculture-workshop
+  namespace: workshop-guide
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: intelligent-agriculture-workshop
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        deployment: intelligent-agriculture-workshop
+    spec:
+      containers:
+      - name: intelligent-agriculture-workshop
+        image: image-registry.openshift-image-registry.svc:5000/workshop-guide/intelligent-agriculture-workshop:latest
+        imagePullPolicy: IfNotPresent
+        resources: {}
