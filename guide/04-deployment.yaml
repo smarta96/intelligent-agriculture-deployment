@@ -23,6 +23,14 @@ spec:
     spec:
       containers:
       - name: intelligent-agriculture-workshop
+        securityContext:
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+            runAsNonRoot: true
+            capabilities:
+              drop:
+              - ALL
         image: image-registry.openshift-image-registry.svc:5000/workshop-guide/intelligent-agriculture-workshop:latest
         imagePullPolicy: IfNotPresent
         resources: {}
