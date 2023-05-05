@@ -39,7 +39,7 @@ spec:
         - name: LAB_EXTRA_URLS
           value: "https://console-openshift-console.apps.cluster-h4v9k.h4v9k.sandbox932.opentlc.com/;OpenShift Console"
         - name: LAB_MODULE_URLS
-          value: "https://intelligent-agriculture-workshop-workshop-guide.apps.cluster-h4v9k.h4v9k.sandbox932.opentlc.com/intelligent-agriculture-workshop/main/1-introduction.htmlUSERID=user1&SUBDOMAIN=cluster-8s5ss.sandbox701.opentlc.com&TOMCATIP=150.240.99.53;Intelligent Agriculture Workshop"
+          value: "https://intelligent-agriculture-workshop-workshop-guide.apps.cluster-h4v9k.h4v9k.sandbox932.opentlc.com/intelligent-agriculture-workshop/main/1-introduction.html?USERID=%USERNAME%&SUBDOMAIN=apps.cluster-h4v9k.h4v9k.sandbox932.opentlc.com;Intelligent Agriculture Workshop"
         - name: LAB_REDIS_HOST
           value: redis
         - name: LAB_REDIS_PASS

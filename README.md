@@ -8,5 +8,5 @@
 - Patch RHODS configuration
 - Deploy guide
 - Deploy username-distribution/redis
-- In username-distribution/usertool, modify LABS URL addresses
+- In username-distribution/usertool, modify LAB_EXTRA_URLS (OpenShift Console) and LAB_MODULE_URLS (Guide) addresses
 - Deploy username-distribution/usertool
