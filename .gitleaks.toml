@@ -5,5 +5,5 @@
   paths = [
     # Ignore fast fake user creation
     '''openshift-tweak\/htpasswd''',
-                
+    '''minio\/minio.yaml'''
   ]

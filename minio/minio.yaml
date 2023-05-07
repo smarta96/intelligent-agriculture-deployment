@@ -1,0 +1,160 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: minio
+  namespace: redhat-ods-applications
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: 
+    ocs-storagecluster-ceph-rbd
+  volumeMode: Filesystem
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: minio
+  namespace: redhat-ods-applications
+  labels:
+    app.kubernetes.io/instance: min
+    app.kubernetes.io/name: minio
+    component.opendatahub.io/name: minio
+    opendatahub.io/component: 'false'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: min
+      app.kubernetes.io/name: minio
+      component.opendatahub.io/name: minio
+      opendatahub.io/component: 'false'
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: min
+        app.kubernetes.io/name: minio
+        component.opendatahub.io/name: minio
+        opendatahub.io/component: 'false'
+    spec:
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: minio
+      containers:
+        - resources: {}
+          readinessProbe:
+            httpGet:
+              path: /minio/health/ready
+              port: 9000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 10
+          terminationMessagePath: /dev/termination-log
+          name: minio
+          livenessProbe:
+            httpGet:
+              path: /minio/health/live
+              port: 9000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 10
+          env:
+            - name: MINIO_ACCESS_KEY
+              value: odsc
+            - name: MINIO_SECRET_KEY
+              value: odsc
+            - name: MINIO_PROMETHEUS_AUTH_TYPE
+              value: public
+            - name: MINIO_TRACE
+              value: 'true'
+            - name: MINIO_ROOT_USER
+              value: odsc
+            - name: MINIO_ROOT_PASSWORD
+              value: odsc2023
+          ports:
+            - containerPort: 9000
+              protocol: TCP
+            - containerPort: 33933
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: storage
+              mountPath: /storage
+          terminationMessagePolicy: File
+          image: 'docker.io/minio/minio:latest'
+          args:
+            - server
+            - /storage
+            - '--console-address=:33933'
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: s3
+  namespace: redhat-ods-applications
+  labels:
+    app.kubernetes.io/instance: min
+    app.kubernetes.io/name: minio
+    component.opendatahub.io/name: minio
+    opendatahub.io/component: 'false'
+spec:
+  ports:
+    - name: api
+      protocol: TCP
+      port: 9000
+      targetPort: 9000
+    - name: web
+      protocol: TCP
+      port: 33933
+      targetPort: 33933
+  internalTrafficPolicy: Cluster
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    app.kubernetes.io/instance: min
+    app.kubernetes.io/name: minio
+    component.opendatahub.io/name: minio
+    opendatahub.io/component: 'false'
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: s3
+  namespace: redhat-ods-applications
+  labels:
+    app.kubernetes.io/instance: min
+    app.kubernetes.io/name: minio
+    component.opendatahub.io/name: minio
+    opendatahub.io/component: 'false'
+spec:
+  to:
+    kind: Service
+    name: s3
+    weight: 100
+  port:
+    targetPort: web
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None

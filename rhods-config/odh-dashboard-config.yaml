@@ -29,18 +29,18 @@ spec:
       resources:
         limits:
           cpu: '2'
-          memory: 4Gi
+          memory: 2Gi
         requests:
           cpu: '1'
-          memory: 2Gi
+          memory: 1Gi
     - name: Medium
       resources:
         limits:
-          cpu: '6'
-          memory: 6Gi
-        requests:
-          cpu: '3'
+          cpu: '4'
           memory: 4Gi
+        requests:
+          cpu: '2'
+          memory: 2Gi
     - name: Large
       resources:
         limits:
@@ -48,4 +48,4 @@ spec:
           memory: 8Gi
         requests:
           cpu: '4'
-          memory: 6Gi
+          memory: 4Gi
