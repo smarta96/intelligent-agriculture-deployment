@@ -2,6 +2,7 @@
 
 - Create OpenShift Cluster from RHPDS
 - From OpenShift tweak folder, replace htpasswd-secret to create users
+- Modify -n openshift-config template/project-request to set limit ranges properly (limit 8CPU  per pod and Memory)
 - Deploy ODF
 - Set default storage class to ocs-storagecluster-ceph-rbd
 - Deploy RHODS
