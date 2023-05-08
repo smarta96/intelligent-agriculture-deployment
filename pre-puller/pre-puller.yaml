@@ -103,7 +103,7 @@ spec:
     spec:
       containers:
       - name: classification
-        image: quay.io/rh-aiservices-bu/intelligent-agriculture-classification:0.0.3
+        image: quay.io/rh-aiservices-bu/intelligent-agriculture-classification:0.0.5
         command: ["tail"]
         args: ["-f", "/dev/null"]
         resources:
