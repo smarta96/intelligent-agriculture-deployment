@@ -11,7 +11,6 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: 
-    ocs-storagecluster-ceph-rbd
   volumeMode: Filesystem
 ---
 kind: Deployment
@@ -79,9 +78,9 @@ spec:
             - name: MINIO_TRACE
               value: 'true'
             - name: MINIO_ROOT_USER
-              value: odsc
+              value: iademo
             - name: MINIO_ROOT_PASSWORD
-              value: odsc2023
+              value: iademo
           ports:
             - containerPort: 9000
               protocol: TCP
